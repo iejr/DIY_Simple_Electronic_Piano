@@ -1,0 +1,7 @@
+"STARTUP.obj",
+"F120_Oscillators.obj",
+"F120_UART0.obj",
+"main.obj",
+"F120_Midi.obj" 
+TO "test1" 
+RAMSIZE(256) 

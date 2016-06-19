@@ -1,0 +1,42 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+D:\Programs\Piano\test2(«Ÿº¸…®√Ë+∑¢ÀÕMIDI√¸¡Ó)\test1.uvproj
+Project File Date:  10/11/2013
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(49): warning C280: 'iKeyInput2': unreferenced local variable
+MAIN.C(52): warning C280: 'uKeyChange2': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SEND_STRING?F120_UART0
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?PORT_RES?F120_MIDI
+Program Size: data=39.0 xdata=0 code=781
+"test1" - 0 Error(s), 4 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(49): warning C280: 'iKeyInput2': unreferenced local variable
+MAIN.C(52): warning C280: 'uKeyChange2': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SEND_STRING?F120_UART0
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?PORT_RES?F120_MIDI
+Program Size: data=39.0 xdata=0 code=781
+"test1" - 0 Error(s), 4 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+MAIN.C(49): warning C280: 'iKeyInput2': unreferenced local variable
+MAIN.C(52): warning C280: 'uKeyChange2': unreferenced local variable
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SEND_STRING?F120_UART0
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?PORT_RES?F120_MIDI
+Program Size: data=39.0 xdata=0 code=781
+"test1" - 0 Error(s), 4 Warning(s).

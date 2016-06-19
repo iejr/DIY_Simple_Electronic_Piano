@@ -1,0 +1,97 @@
+C51 COMPILER V9.00   F120_OSCILLATORS                                                      10/11/2013 22:01:24 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE F120_OSCILLATORS
+OBJECT MODULE PLACED IN F120_Oscillators.OBJ
+COMPILER INVOKED BY: d:\Program Files\Keil\C51\BIN\C51.EXE F120_Oscillators.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #ifndef _F120OSCILLATORS_
+   2          #define _F120OSCILLATORS_
+   3          
+   4          #include <c8051f120.h>
+   5          #include <F120_Oscillators.h>
+   6          #include <common.h>
+   7          
+   8          void OSCILLATOR_Init (void)
+   9          {
+  10   1         int i;                              // Software timer
+  11   1         
+  12   1         char SFRPAGE_SAVE = SFRPAGE;        // Save Current SFR page
+  13   1      
+  14   1         SFRPAGE = CONFIG_PAGE;              // Set SFR page
+  15   1      
+  16   1         OSCICN = 0x80;                      // Set internal oscillator to run
+  17   1                                             // at its slowest frequency
+  18   1      
+  19   1         CLKSEL = 0x00;                      // Select the internal osc. as
+  20   1                                             // the SYSTEMCLOCK source
+  21   1      
+  22   1         // Initialize external crystal oscillator to use 22.1184 MHz crystal
+  23   1      
+  24   1         OSCXCN = 0x67;                      // Enable external crystal osc.
+  25   1         for (i=0; i < 256; i++);            // Wait at least 1ms
+  26   1      
+  27   1         while (!(OSCXCN & 0x80));           // Wait for crystal osc to settle
+  28   1      
+  29   1         SFRPAGE = LEGACY_PAGE;
+  30   1         FLSCL |=  0x30;                     // Initially set FLASH read timing for
+  31   1                                             // 100MHz SYSTEMCLOCK (most conservative
+  32   1                                             // setting)
+  33   1         if (SYSTEMCLOCK <= 25000000) {           
+  34   2         // Set FLASH read timing for <=25MHz
+  35   2            FLSCL &= ~0x30;
+  36   2         } else if (SYSTEMCLOCK <= 50000000) {    
+  37   2         // Set FLASH read timing for <=50MHz
+  38   2            FLSCL &= ~0x20;
+  39   2         } else if (SYSTEMCLOCK <= 75000000) {    
+  40   2         // Set FLASH read timing for <=75MHz
+  41   2            FLSCL &= ~0x10;
+  42   2         } else {                            // set FLASH read timing for <=100MHz
+  43   2            FLSCL &= ~0x00;
+  44   2         }
+  45   1      
+  46   1         // Start PLL for 50MHz operation
+  47   1         SFRPAGE = PLL0_PAGE;
+  48   1         PLL0CN = 0x04;                      // Select EXTOSC as clk source
+  49   1         PLL0CN |= 0x01;                     // Enable PLL power
+  50   1         PLL0DIV = 0x04;                     // Divide by 4
+  51   1         PLL0FLT &= ~0x0f;
+  52   1         PLL0FLT |=  0x0f;                   // Set Loop Filt for (22/4)MHz input clock
+  53   1         PLL0FLT &= ~0x30;                   // Set ICO for 30-60MHz
+  54   1         PLL0FLT |=  0x10;
+  55   1      
+C51 COMPILER V9.00   F120_OSCILLATORS                                                      10/11/2013 22:01:24 PAGE 2   
+
+  56   1         PLL0MUL = 0x09;                     // Multiply by 9
+  57   1      
+  58   1         // wait at least 5us
+  59   1         for (i = 0; i < 256; i++) ;
+  60   1      
+  61   1         PLL0CN |= 0x02;                     // Enable PLL
+  62   1      
+  63   1         while (PLL0CN & 0x10 == 0x00);      // Wait for PLL to lock
+  64   1      
+  65   1         SFRPAGE = CONFIG_PAGE;
+  66   1      
+  67   1         CLKSEL = 0x02;                      // Select PLL as SYSTEMCLOCK source
+  68   1      
+  69   1         SFRPAGE = SFRPAGE_SAVE;             // Restore SFRPAGE
+  70   1      }
+  71          
+  72          #endif
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     98    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,449 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        10/16/2013  11:05:19  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\PROGRAM FILES\KEIL\C51\BIN\BL51.EXE STARTUP.obj, F120_Oscillators.obj, F120_UART0.obj, main.obj, F120_Midi.obj TO tes
+>> t1 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  F120_Oscillators.obj (F120_OSCILLATORS)
+  F120_UART0.obj (F120_UART0)
+  main.obj (MAIN)
+  F120_Midi.obj (F120_MIDI)
+  D:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  test1 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0012H     UNIT         _DATA_GROUP_
+            DATA    001AH     000CH     UNIT         ?DT?MAIN
+            IDATA   0026H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0158H     UNIT         ?PR?MAIN?MAIN
+            CODE    015BH     008CH     UNIT         ?C_C51STARTUP
+            CODE    01E7H     0062H     UNIT         ?PR?OSCILLATOR_INIT?F120_OSCILLATORS
+            CODE    0249H     002CH     UNIT         ?PR?UART0_INIT?F120_UART0
+            CODE    0275H     001EH     UNIT         ?PR?PORT_RES?F120_MIDI
+            CODE    0293H     001BH     UNIT         ?PR?_SEND_STRING?F120_UART0
+            CODE    02AEH     0016H     UNIT         ?PR?KEYBOARD_INIT?F120_MIDI
+            CODE    02C4H     0014H     UNIT         ?PR?_SEND_MIDI_CMD?F120_MIDI
+            CODE    02D8H     0011H     UNIT         ?PR?UART0_PORT_INIT?F120_UART0
+            CODE    02E9H     0011H     UNIT         ?C_INITSEG
+            CODE    02FAH     000BH     UNIT         ?PR?PORT_ENABLE?MAIN
+            CODE    0305H     0008H     UNIT         ?PR?_SEND_BYTE?F120_UART0
+
+
+
+OVERLAY MAP OF MODULE:   test1 (?C_STARTUP)
+
+
+SEGMENT                                        DATA_GROUP 
+  +--> CALLED SEGMENT                        START    LENGTH
+------------------------------------------------------------
+?C_C51STARTUP                                -----    -----
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN                                0008H    0010H
+  +--> ?PR?OSCILLATOR_INIT?F120_OSCILLATORS
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/16/2013  11:05:19  PAGE 2
+
+
+  +--> ?PR?UART0_INIT?F120_UART0
+  +--> ?PR?KEYBOARD_INIT?F120_MIDI
+  +--> ?PR?PORT_ENABLE?MAIN
+  +--> ?PR?_SEND_MIDI_CMD?F120_MIDI
+
+?PR?UART0_INIT?F120_UART0                    -----    -----
+  +--> ?PR?UART0_PORT_INIT?F120_UART0
+
+?PR?_SEND_MIDI_CMD?F120_MIDI                 0018H    0002H
+  +--> ?PR?_SEND_BYTE?F120_UART0
+
+
+
+SYMBOL TABLE OF MODULE:  test1 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:015BH         SEGMENT       ?C_C51STARTUP
+  I:0026H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:015EH         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:015BH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:015BH         LINE#         133
+  C:015DH         LINE#         134
+  C:015EH         LINE#         135
+  C:015FH         LINE#         136
+  C:0161H         LINE#         185
+  C:0164H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        F120_OSCILLATORS
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:008FH         PUBLIC        PLL0FLT
+  D:008EH         PUBLIC        PLL0MUL
+  D:0084H         PUBLIC        SFRPAGE
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/16/2013  11:05:19  PAGE 3
+
+
+  D:0089H         PUBLIC        PLL0CN
+  D:0097H         PUBLIC        CLKSEL
+  D:008AH         PUBLIC        OSCICN
+  D:008CH         PUBLIC        OSCXCN
+  D:00B7H         PUBLIC        FLSCL
+  C:01E7H         PUBLIC        OSCILLATOR_Init
+  D:008DH         PUBLIC        PLL0DIV
+  -------         PROC          OSCILLATOR_INIT
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0007H         SYMBOL        SFRPAGE_SAVE
+  -------         ENDDO         
+  C:01E7H         LINE#         8
+  C:01E7H         LINE#         9
+  C:01E7H         LINE#         12
+  C:01E9H         LINE#         14
+  C:01ECH         LINE#         16
+  C:01EFH         LINE#         19
+  C:01F2H         LINE#         24
+  C:01F5H         LINE#         25
+  C:0204H         LINE#         27
+  C:0209H         LINE#         29
+  C:020CH         LINE#         30
+  C:020FH         LINE#         33
+  C:020FH         LINE#         35
+  C:020FH         LINE#         36
+  C:020FH         LINE#         38
+  C:0212H         LINE#         39
+  C:0212H         LINE#         41
+  C:0212H         LINE#         42
+  C:0212H         LINE#         43
+  C:0212H         LINE#         44
+  C:0212H         LINE#         47
+  C:0215H         LINE#         48
+  C:0218H         LINE#         49
+  C:021BH         LINE#         50
+  C:021EH         LINE#         51
+  C:0221H         LINE#         52
+  C:0224H         LINE#         53
+  C:0227H         LINE#         54
+  C:022AH         LINE#         56
+  C:022DH         LINE#         59
+  C:023DH         LINE#         61
+  C:0240H         LINE#         63
+  C:0240H         LINE#         65
+  C:0243H         LINE#         67
+  C:0246H         LINE#         69
+  C:0248H         LINE#         70
+  -------         ENDPROC       OSCILLATOR_INIT
+  -------         ENDMOD        F120_OSCILLATORS
+
+  -------         MODULE        F120_UART0
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0305H         PUBLIC        _Send_Byte
+  D:0084H         PUBLIC        SFRPAGE
+  C:02D8H         SYMBOL        UART0_PORT_Init
+  D:00A4H         PUBLIC        P0MDOUT
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/16/2013  11:05:19  PAGE 4
+
+
+  D:00B8H         PUBLIC        IP
+  D:00E1H         PUBLIC        XBR0
+  D:00E2H         PUBLIC        XBR1
+  D:00CCH         PUBLIC        TMR4
+  D:00C9H         PUBLIC        TMR4CF
+  D:00C8H         PUBLIC        TMR4CN
+  B:00A8H.4       PUBLIC        ES0
+  B:0098H.1       PUBLIC        TI0
+  B:00C8H.2       PUBLIC        TR4
+  D:00CAH         PUBLIC        RCAP4
+  D:0099H         PUBLIC        SBUF0
+  C:0249H         PUBLIC        UART0_Init
+  D:0098H         PUBLIC        SCON0
+  C:0293H         PUBLIC        _Send_String
+  D:0091H         PUBLIC        SSTA0
+  -------         PROC          UART0_PORT_INIT
+  -------         DO            
+  D:0007H         SYMBOL        SFRPAGE_SAVE
+  -------         ENDDO         
+  C:02D8H         LINE#         64
+  C:02D8H         LINE#         65
+  C:02D8H         LINE#         66
+  C:02DAH         LINE#         68
+  C:02DDH         LINE#         70
+  C:02E0H         LINE#         71
+  C:02E3H         LINE#         75
+  C:02E6H         LINE#         78
+  C:02E8H         LINE#         79
+  -------         ENDPROC       UART0_PORT_INIT
+  -------         PROC          UART0_INIT
+  -------         DO            
+  D:0007H         SYMBOL        SFRPAGE_SAVE
+  -------         ENDDO         
+  C:0249H         LINE#         93
+  C:0249H         LINE#         94
+  C:0249H         LINE#         97
+  C:024CH         LINE#         99
+  C:024EH         LINE#         101
+  C:0251H         LINE#         103
+  C:0254H         LINE#         105
+  C:0257H         LINE#         107
+  C:025DH         LINE#         108
+  C:0263H         LINE#         109
+  C:0265H         LINE#         111
+  C:0267H         LINE#         113
+  C:026AH         LINE#         116
+  C:026DH         LINE#         121
+  C:026FH         LINE#         122
+  C:0272H         LINE#         124
+  C:0274H         LINE#         125
+  -------         ENDPROC       UART0_INIT
+  -------         PROC          _SEND_BYTE
+  D:0007H         SYMBOL        cSend
+  C:0305H         LINE#         130
+  C:0305H         LINE#         131
+  C:0305H         LINE#         132
+  C:0307H         LINE#         133
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/16/2013  11:05:19  PAGE 5
+
+
+  C:030AH         LINE#         134
+  C:030CH         LINE#         135
+  -------         ENDPROC       _SEND_BYTE
+  -------         PROC          _SEND_STRING
+  D:0004H         SYMBOL        sSend
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:0293H         LINE#         140
+  C:0297H         LINE#         141
+  C:0297H         LINE#         142
+  C:0299H         LINE#         143
+  C:0299H         LINE#         144
+  C:0299H         LINE#         145
+  C:02A5H         LINE#         146
+  C:02A6H         LINE#         148
+  C:02A9H         LINE#         149
+  C:02ADH         LINE#         150
+  -------         ENDPROC       _SEND_STRING
+  -------         ENDMOD        F120_UART0
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00FFH         PUBLIC        WDTCN
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:0084H         PUBLIC        SFRPAGE
+  D:00A6H         PUBLIC        P2MDOUT
+  D:00A7H         PUBLIC        P3MDOUT
+  D:00E3H         PUBLIC        XBR2
+  C:0003H         PUBLIC        main
+  D:001AH         PUBLIC        cKeyNumberH
+  D:0020H         PUBLIC        cKeyNumberL
+  C:02FAH         PUBLIC        Port_Enable
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  D:0009H         SYMBOL        j
+  D:000BH         SYMBOL        cZone
+  D:000CH         SYMBOL        cKeyInput1
+  D:000DH         SYMBOL        cKeyInput2
+  D:000EH         SYMBOL        iKeyInput1
+  D:0010H         SYMBOL        iKeyInput2
+  D:0005H         SYMBOL        cKeyChange1
+  D:0007H         SYMBOL        cKeyChange2
+  D:0012H         SYMBOL        uKeyChange1
+  D:0014H         SYMBOL        uKeyChange2
+  D:0016H         SYMBOL        iTestBit
+  -------         ENDDO         
+  C:0003H         LINE#         42
+  C:0003H         LINE#         43
+  C:0003H         LINE#         44
+  C:0006H         LINE#         45
+  C:000AH         LINE#         47
+  C:000DH         LINE#         54
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/16/2013  11:05:19  PAGE 6
+
+
+  C:0012H         LINE#         56
+  C:0015H         LINE#         58
+  C:0018H         LINE#         59
+  C:001BH         LINE#         61
+  C:001EH         LINE#         63
+  C:0021H         LINE#         65
+  C:0024H         LINE#         67
+  C:0027H         LINE#         69
+  C:0029H         LINE#         71
+  C:0029H         LINE#         72
+  C:0029H         LINE#         73
+  C:002CH         LINE#         75
+  C:002FH         LINE#         76
+  C:002FH         LINE#         77
+  C:0032H         LINE#         78
+  C:0037H         LINE#         79
+  C:004AH         LINE#         80
+  C:004DH         LINE#         81
+  C:0050H         LINE#         82
+  C:0056H         LINE#         83
+  C:005DH         LINE#         84
+  C:0068H         LINE#         87
+  C:006BH         LINE#         88
+  C:006EH         LINE#         89
+  C:0071H         LINE#         90
+  C:0074H         LINE#         91
+  C:0077H         LINE#         92
+  C:007AH         LINE#         93
+  C:007CH         LINE#         94
+  C:007FH         LINE#         95
+  C:0082H         LINE#         135
+  C:008BH         LINE#         136
+  C:0094H         LINE#         138
+  C:0099H         LINE#         139
+  C:00A0H         LINE#         140
+  C:00ACH         LINE#         141
+  C:00B0H         LINE#         142
+  C:00B0H         LINE#         143
+  C:00B6H         LINE#         146
+  C:00BBH         LINE#         147
+  C:00BBH         LINE#         148
+  C:00C7H         LINE#         149
+  C:00C7H         LINE#         150
+  C:00CAH         LINE#         151
+  C:00D6H         LINE#         152
+  C:00D6H         LINE#         155
+  C:00E5H         LINE#         156
+  C:00E7H         LINE#         158
+  C:00E7H         LINE#         161
+  C:00F9H         LINE#         162
+  C:00F9H         LINE#         163
+  C:00F9H         LINE#         164
+  C:0104H         LINE#         165
+  C:0115H         LINE#         167
+  C:011CH         LINE#         168
+  C:0123H         LINE#         169
+  C:0123H         LINE#         171
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/16/2013  11:05:19  PAGE 7
+
+
+  C:0129H         LINE#         172
+  C:0135H         LINE#         174
+  C:0142H         LINE#         175
+  -------         ENDPROC       MAIN
+  -------         PROC          PORT_ENABLE
+  -------         DO            
+  D:0007H         SYMBOL        SFRPAGE_SAVE
+  -------         ENDDO         
+  C:02FAH         LINE#         182
+  C:02FAH         LINE#         183
+  C:02FAH         LINE#         184
+  C:02FCH         LINE#         186
+  C:02FFH         LINE#         188
+  C:0302H         LINE#         190
+  C:0304H         LINE#         191
+  -------         ENDPROC       PORT_ENABLE
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        F120_MIDI
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:0084H         PUBLIC        SFRPAGE
+  C:02AEH         PUBLIC        KeyBoard_Init
+  D:00A5H         PUBLIC        P1MDOUT
+  D:00A6H         PUBLIC        P2MDOUT
+  D:00A7H         PUBLIC        P3MDOUT
+  C:0275H         PUBLIC        Port_Res
+  C:02C4H         PUBLIC        _Send_Midi_Cmd
+  -------         PROC          KEYBOARD_INIT
+  -------         DO            
+  D:0007H         SYMBOL        SFRPAGE_SAVE
+  -------         ENDDO         
+  C:02AEH         LINE#         7
+  C:02AEH         LINE#         8
+  C:02AEH         LINE#         9
+  C:02B0H         LINE#         11
+  C:02B3H         LINE#         13
+  C:02B6H         LINE#         14
+  C:02B8H         LINE#         15
+  C:02BBH         LINE#         16
+  C:02BEH         LINE#         17
+  C:02C1H         LINE#         21
+  C:02C3H         LINE#         22
+  -------         ENDPROC       KEYBOARD_INIT
+  -------         PROC          PORT_RES
+  C:0275H         LINE#         24
+  C:0275H         LINE#         25
+  C:0275H         LINE#         26
+  C:0278H         LINE#         27
+  C:027BH         LINE#         28
+  C:027EH         LINE#         29
+  C:0281H         LINE#         30
+  C:0284H         LINE#         31
+  C:0287H         LINE#         32
+  C:028AH         LINE#         33
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/16/2013  11:05:19  PAGE 8
+
+
+  C:028CH         LINE#         34
+  C:028FH         LINE#         35
+  C:0292H         LINE#         36
+  -------         ENDPROC       PORT_RES
+  -------         PROC          _SEND_MIDI_CMD
+  D:0007H         SYMBOL        cc
+  D:0018H         SYMBOL        kk
+  D:0019H         SYMBOL        vv
+  C:02C4H         LINE#         38
+  C:02C8H         LINE#         39
+  C:02C8H         LINE#         40
+  C:02CBH         LINE#         41
+  C:02CEH         LINE#         42
+  C:02D3H         LINE#         43
+  -------         ENDPROC       _SEND_MIDI_CMD
+  -------         ENDMOD        F120_MIDI
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SEND_STRING?F120_UART0
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?PORT_RES?F120_MIDI
+
+Program Size: data=39.0 xdata=0 code=781
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

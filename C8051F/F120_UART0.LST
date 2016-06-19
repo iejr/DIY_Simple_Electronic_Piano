@@ -1,0 +1,180 @@
+C51 COMPILER V9.00   F120_UART0                                                            10/11/2013 22:01:24 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE F120_UART0
+OBJECT MODULE PLACED IN F120_UART0.OBJ
+COMPILER INVOKED BY: d:\Program Files\Keil\C51\BIN\C51.EXE F120_UART0.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //-----------------------------------------------------------------------------
+   2          // F12x_UART0_Interrupt.c
+   3          //-----------------------------------------------------------------------------
+   4          // Copyright 2006 Silicon Laboratories, Inc.
+   5          // http://www.silabs.com
+   6          //
+   7          // Program Description:
+   8          //
+   9          // This program demonstrates how to configure the C8051F120 to write to and read 
+  10          // from the UART interface. The program reads a word using the UART0 interrupts 
+  11          // and outputs that word to the screen, with all characters in uppercase
+  12          //
+  13          // How To Test:
+  14          //
+  15          // 1) Download code to a 'F12x device that is connected to a UART transceiver
+  16          // 2) Verify jumpers J6 and J9 are populated on the 'F12x TB.
+  17          // 3) Connect serial cable from the transceiver to a PC
+  18          // 4) On the PC, open HyperTerminal (or any other terminal program) and connect
+  19          //    to the COM port at <BAUDRATE> and 8-N-1
+  20          // 5) Download and execute code on an 'F12x target board.
+  21          // 6) Type up to 64 characters into the Terminal and press Enter.  The MCU 
+  22          //    will then print back the characters that were typed
+  23          //   
+  24          //
+  25          // Target:         C8051F12x
+  26          // Tool chain:     Keil C51 7.50 / Keil EVAL C51
+  27          // Command Line:   None
+  28          //
+  29          // Release 1.0
+  30          //    -Initial Revision (SM)
+  31          //    -11 JULY 2007
+  32          //
+  33          
+  34          
+  35          //-----------------------------------------------------------------------------
+  36          // Includes
+  37          //-----------------------------------------------------------------------------
+  38          
+  39          #include <c8051f120.h>                 // SFR declarations
+  40          //#include <string.h>
+  41          #include <F120_UART0.h>
+  42          #include <common.h>                    
+  43          
+  44          //-----------------------------------------------------------------------------
+  45          // 16-bit SFR Definitions for 'F12x
+  46          //-----------------------------------------------------------------------------
+  47          
+  48          sfr16 RCAP4    = 0xca;                 // Timer2 capture/reload
+  49          sfr16 TMR4     = 0xcc;                 // Timer2
+  50          
+  51          
+  52          //-----------------------------------------------------------------------------
+  53          // PORT_Init
+  54          //-----------------------------------------------------------------------------
+  55          //
+C51 COMPILER V9.00   F120_UART0                                                            10/11/2013 22:01:24 PAGE 2   
+
+  56          // Return Value : None
+  57          // Parameters   : None
+  58          //
+  59          // This function configures the crossbar and GPIO ports.
+  60          //
+  61          // P0.0   digital   push-pull     UART TX
+  62          // P0.1   digital   open-drain    UART RX
+  63          //-----------------------------------------------------------------------------
+  64          void UART0_PORT_Init (void)
+  65          {
+  66   1         char SFRPAGE_SAVE = SFRPAGE;        // Save Current SFR page
+  67   1      
+  68   1         SFRPAGE = CONFIG_PAGE;              // Set SFR page
+  69   1      
+  70   1         XBR0     = 0x04;                    // Enable UART0
+  71   1         XBR1     = 0x00;
+  72   1      //   XBR2     = 0x40;                    // Enable crossbar and weak pull-up
+  73   1                                             
+  74   1      
+  75   1         P0MDOUT |= 0x01;                    // Set TX pin to push-pull
+  76   1      //   P1MDOUT |= 0x40;                    // Set P1.6(LED) to push-pull
+  77   1      
+  78   1         SFRPAGE = SFRPAGE_SAVE;             // Restore SFR page
+  79   1      }
+  80          
+  81          
+  82          //-----------------------------------------------------------------------------
+  83          // UART0_Init   Variable baud rate, Timer 2, 8-N-1
+  84          //-----------------------------------------------------------------------------
+  85          //
+  86          // Return Value : None
+  87          // Parameters   : None
+  88          //
+  89          // Configure UART0 for operation at <baudrate> 8-N-1 using Timer2 as
+  90          // baud rate source.
+  91          //
+  92          //-----------------------------------------------------------------------------
+  93          void UART0_Init (void)
+  94          {
+  95   1         char SFRPAGE_SAVE;
+  96   1      
+  97   1         UART0_PORT_Init();
+  98   1      
+  99   1         SFRPAGE_SAVE = SFRPAGE;             // Preserve SFRPAGE
+ 100   1      
+ 101   1         SFRPAGE = TMR4_PAGE;
+ 102   1      
+ 103   1         TMR4CN = 0x00;                      // Timer in 16-bit auto-reload up timer
+ 104   1                                             // mode
+ 105   1         TMR4CF = 0x08;                      // SYSCLK is time base; no output;
+ 106   1                                             // up count only
+ 107   1         RCAP4 = - ((long) SYSTEMCLOCK/BAUDRATE/16);
+ 108   1         TMR4 = RCAP4;
+ 109   1         TR4= 1;                             // Start Timer4
+ 110   1      
+ 111   1         SFRPAGE = UART0_PAGE;
+ 112   1      
+ 113   1         SCON0 = 0x50;                       // 8-bit variable baud rate;
+ 114   1                                             // 9th bit ignored; RX enabled
+ 115   1                                             // clear all flags
+ 116   1         SSTA0 = 0x1F;                       // Clear all flags; enable baud rate
+ 117   1                                             // doubler (not relevant for these
+C51 COMPILER V9.00   F120_UART0                                                            10/11/2013 22:01:24 PAGE 3   
+
+ 118   1                                             // timers);
+ 119   1                                             // Use Timer2 as RX and TX baud rate
+ 120   1                                             // source;
+ 121   1         ES0 = 1;  
+ 122   1         IP |= 0x10;
+ 123   1      
+ 124   1         SFRPAGE = SFRPAGE_SAVE;             // Restore SFRPAGE
+ 125   1      }
+ 126          
+ 127          
+ 128          /*********************************************************************/
+ 129          /*****************iejr:·¢ËÍ×Ö½Ú***************************************/
+ 130          void Send_Byte(uchar cSend)
+ 131          {
+ 132   1         SBUF0 = cSend;
+ 133   1         while(!TI0);
+ 134   1         TI0 = 0;
+ 135   1      }
+ 136          
+ 137          
+ 138          /*********************************************************************/
+ 139          /*****************iejr:·¢ËÍ×Ö·û´®*************************************/
+ 140          void Send_String(uchar xdata* sSend)
+ 141          {
+ 142   1         uchar i = 0;
+ 143   1         for(i = 0;i < 255;i++)
+ 144   1         {
+ 145   2            if(sSend[i] == '\0')
+ 146   2                   break;
+ 147   2                else
+ 148   2               Send_Byte(sSend[i]);
+ 149   2         }
+ 150   1      }
+ 151          //-----------------------------------------------------------------------------
+ 152          // End Of File
+ 153          //-----------------------------------------------------------------------------
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     96    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

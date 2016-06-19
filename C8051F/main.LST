@@ -1,0 +1,230 @@
+C51 COMPILER V9.00   MAIN                                                                  10/16/2013 11:05:19 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: d:\Program Files\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          
+   3          
+   4          //-----------------------------------------------------------------------------
+   5          // Includes
+   6          //-----------------------------------------------------------------------------
+   7          
+   8          #include <c8051f120.h>                 // SFR declarations
+   9          #include <stdio.h> 
+  10          #include <common.h>                    
+  11          #include <F120_UART0.h>
+  12          #include <F120_Oscillators.h>
+  13          #include <F120_Midi.h>
+  14          
+  15          //-----------------------------------------------------------------------------
+  16          // 16-bit SFR Definitions for 'F12x
+  17          //-----------------------------------------------------------------------------
+  18          
+  19          //-----------------------------------------------------------------------------
+  20          // Global Constants
+  21          //-----------------------------------------------------------------------------
+  22          
+  23          //-----------------------------------------------------------------------------
+  24          // Function Prototypes
+  25          //-----------------------------------------------------------------------------
+  26          extern void OSCILLATOR_Init(void);
+  27          extern void UART0_Init(void);
+  28          
+  29          extern void KeyBoard_Init(void);
+  30          extern void Port_Res(void);
+  31          
+  32          void Port_Enable(void);
+  33          //-----------------------------------------------------------------------------
+  34          // Global Variables
+  35          //-----------------------------------------------------------------------------
+  36          uchar cKeyNumberH[6] = {0xff,0xff,0xff,0xff,0xff,0xff};
+  37          uchar cKeyNumberL[6] = {0xff,0xff,0xff,0xff,0xff,0xff};
+  38          //-----------------------------------------------------------------------------
+  39          // main() Routine
+  40          //-----------------------------------------------------------------------------
+  41          
+  42          void main (void)
+  43          {
+  44   1         uchar i = 0;
+  45   1         uint j = 0;
+  46   1      
+  47   1              uchar cZone = 0x01;
+  48   1              uchar cKeyInput1,cKeyInput2;
+  49   1              uint iKeyInput1,iKeyInput2;
+  50   1      
+  51   1              uchar cKeyChange1,cKeyChange2;
+  52   1              uint  uKeyChange1,uKeyChange2;
+  53   1      
+  54   1              uint iTestBit = 1;
+  55   1      
+C51 COMPILER V9.00   MAIN                                                                  10/16/2013 11:05:19 PAGE 2   
+
+  56   1         SFRPAGE = CONFIG_PAGE;
+  57   1      
+  58   1         WDTCN = 0xDE;                       // Disable watchdog timer
+  59   1         WDTCN = 0xAD;
+  60   1      
+  61   1         OSCILLATOR_Init ();                 // Initialize oscillator
+  62   1      
+  63   1         UART0_Init ();                      // Initialize UART0
+  64   1      
+  65   1         KeyBoard_Init();
+  66   1      
+  67   1         Port_Enable();
+  68   1      
+  69   1         EA = 0;
+  70   1      
+  71   1         while (1)
+  72   1         {      
+  73   2            cZone = 0x01;
+  74   2                
+  75   2                for(i = 0;i < 6;i++)
+  76   2                {
+  77   3                    SFRPAGE = CONFIG_PAGE;
+  78   3                    P1 = 0xff & (~cZone);
+  79   3                        for(j=0;j<20;j++);
+  80   3                        cKeyInput1 = P2;
+  81   3                        cKeyInput2 = P3;
+  82   3                        iKeyInput1 = cKeyInput2;
+  83   3                        iKeyInput1 <<= 8;
+  84   3                        iKeyInput1 += cKeyInput1;
+  85   3      
+  86   3      //                Port_Res();
+  87   3                P2MDOUT = 0xff;
+  88   3                       P3MDOUT = 0xff;
+  89   3                       P1 = 0xff;
+  90   3                       P2 = 0xff;
+  91   3                       P3 = 0xff;
+  92   3                       P2MDOUT = 0x00;
+  93   3                       P3MDOUT = 0x00;
+  94   3                       P2 = 0xff;
+  95   3                       P3 = 0xff;
+  96   3      /*
+  97   3                        if(iIn != 65535)
+  98   3                        {
+  99   3                        for(i = 0;i < 8270;i++);
+ 100   3                                SFRPAGE = CONFIG_PAGE;
+ 101   3                            P1 = k;
+ 102   3                                
+ 103   3                                cIn1 = P2;
+ 104   3                                cIn2 = P3;
+ 105   3                                iInOK = cIn2;
+ 106   3                                iInOK <<= 8;
+ 107   3                                iInOK += cIn1;
+ 108   3                                
+ 109   3                                iKeyNumberBuf[i] = iIn;
+ 110   3              
+ 111   3                                P2MDOUT = 0xff;
+ 112   3                                P3MDOUT = 0xff;
+ 113   3                                P1 = 0xff;
+ 114   3                                P2 = 0xff;
+ 115   3                                P3 = 0xff;
+ 116   3                                P2MDOUT = 0x00;
+ 117   3                                P3MDOUT = 0x00;
+C51 COMPILER V9.00   MAIN                                                                  10/16/2013 11:05:19 PAGE 3   
+
+ 118   3                                P2 = 0xff;
+ 119   3                                P3 = 0xff;
+ 120   3      
+ 121   3                                if(iIn == iInOK)
+ 122   3                                {
+ 123   3                                        SFRPAGE = UART0_PAGE;
+ 124   3                                        Send_Byte(iIn);
+ 125   3                                        Send_Byte(0x00);
+ 126   3                                }
+ 127   3                        }
+ 128   3      */
+ 129   3      
+ 130   3      //                SFRPAGE = UART0_PAGE;
+ 131   3      //                Send_Byte(cKeyInput2);
+ 132   3      //                Send_Byte(cKeyInput1);
+ 133   3      //                Send_Byte(0x00);
+ 134   3      
+ 135   3                        cKeyChange2 = cKeyNumberH[i] ^ cKeyInput2;
+ 136   3                        cKeyChange1 = cKeyNumberL[i] ^ cKeyInput1;
+ 137   3                         
+ 138   3                        uKeyChange1 = cKeyChange2;
+ 139   3                        uKeyChange1 <<= 8;
+ 140   3                        uKeyChange1 += cKeyChange1;
+ 141   3                        if(uKeyChange1 != 0)
+ 142   3                        {
+ 143   4                            iTestBit = 1;
+ 144   4      //                        SFRPAGE = UART0_PAGE;
+ 145   4      //                        Send_Byte(iKeyInput1);
+ 146   4                            for(j = 0;j < 12;j++)
+ 147   4                                {
+ 148   5                                     if((uKeyChange1 & iTestBit) != 0)
+ 149   5                                         {
+ 150   6                                             SFRPAGE = UART0_PAGE;
+ 151   6                                                 if((iKeyInput1 & iTestBit) != 0)
+ 152   6                                                 {
+ 153   7      //                                             Send_Byte(12*i + j + MIDI_ADDITION);//·¢ËÍÍ£Ö¹ÃüÁî
+ 154   7      //                                                 Send_Byte(0x00);
+ 155   7                                                         Send_Midi_Cmd(0x81,12*i + j + MIDI_ADDITION,0x7e);
+ 156   7                                                 }
+ 157   6                                                 else
+ 158   6                                                 {
+ 159   7      //                                             Send_Byte(12*i + j + MIDI_ADDITION);//·¢ËÍµ¯×àÃüÁî
+ 160   7      //                                                 Send_Byte(0xff);
+ 161   7                                 Send_Midi_Cmd(0x91,12*i + j + MIDI_ADDITION,0x6f);
+ 162   7                                                 }
+ 163   6                                         }
+ 164   5                                         iTestBit <<= 1;
+ 165   5                                }
+ 166   4      
+ 167   4                                cKeyNumberH[i] = cKeyInput2;
+ 168   4                                cKeyNumberL[i] = cKeyInput1;
+ 169   4                        }
+ 170   3                        
+ 171   3                        cZone <<= 1;
+ 172   3                }
+ 173   2      
+ 174   2                for(i = 0;i < 127;i++)
+ 175   2                   for(j = 0;j < 1000;j++);
+ 176   2         }
+ 177   1      }
+*** WARNING C280 IN LINE 49 OF MAIN.C: 'iKeyInput2': unreferenced local variable
+*** WARNING C280 IN LINE 52 OF MAIN.C: 'uKeyChange2': unreferenced local variable
+C51 COMPILER V9.00   MAIN                                                                  10/16/2013 11:05:19 PAGE 4   
+
+ 178          
+ 179          //-----------------------------------------------------------------------------
+ 180          // Initialization Subroutines
+ 181          //-----------------------------------------------------------------------------
+ 182          void Port_Enable(void)
+ 183          {
+ 184   1         char SFRPAGE_SAVE = SFRPAGE;        // Save Current SFR page
+ 185   1      
+ 186   1         SFRPAGE = CONFIG_PAGE;              // Set SFR page
+ 187   1      
+ 188   1         XBR2     = 0x40;                    // Enable crossbar and weak pull-up
+ 189   1                                             
+ 190   1         SFRPAGE = SFRPAGE_SAVE;             // Restore SFR page
+ 191   1      }
+ 192          
+ 193          //-----------------------------------------------------------------------------
+ 194          // Interrupt Service Routines
+ 195          //-----------------------------------------------------------------------------
+ 196          
+ 197          //-----------------------------------------------------------------------------
+ 198          // End Of File
+ 199          //-----------------------------------------------------------------------------
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    355    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     12      16
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  2 WARNING(S),  0 ERROR(S)

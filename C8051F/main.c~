@@ -150,13 +150,13 @@ void main (void)
 				       SFRPAGE = UART0_PAGE;
 					   if((iKeyInput1 & iTestBit) != 0)
 					   {
-//					       Send_Byte(12*i + j + MIDI_ADDITION);//sent stop cmd
+//					       Send_Byte(12*i + j + MIDI_ADDITION);//∑¢ÀÕÕ£÷π√¸¡Ó
 //						   Send_Byte(0x00);
 						   Send_Midi_Cmd(0x81,12*i + j + MIDI_ADDITION,0x7e);
 					   }
 					   else
 					   {
-//					       Send_Byte(12*i + j + MIDI_ADDITION);//set play cmd
+//					       Send_Byte(12*i + j + MIDI_ADDITION);//∑¢ÀÕµØ◊‡√¸¡Ó
 //						   Send_Byte(0xff);
                            Send_Midi_Cmd(0x91,12*i + j + MIDI_ADDITION,0x6f);
 					   }
